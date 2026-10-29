@@ -1,0 +1,22 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadAndUpdatePaymentRecords",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+      ],
+      "Resource": "arn:aws:dynamodb:ap-southeast-2:412433835611:table/CashFlowPayments"
+    },
+    {
+      "Sid": "SendPaymentRemindersToInvoiceRecipient",
+      "Effect": "Allow",
+      "Action": [
+        "ses:SendEmail"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

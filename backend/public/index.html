@@ -1,0 +1,467 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#08111f" />
+  <title>CashFlow Sentinel — Financial Health</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+  <section id="welcomeScreen" class="gate-screen">
+    <div class="gate-card welcome-card">
+      <div class="brand-mark big-mark">C<span>F</span></div>
+      <div class="eyebrow">MSME FINANCIAL INTELLIGENCE</div>
+      <h1>CashFlow <em>Sentinel</em></h1>
+      <p>See cash-flow pressure before it becomes a crisis. Turn your numbers into clearer decisions.</p>
+      <div class="welcome-highlights">
+        <span>◈ Early risk alerts</span>
+        <span>✦ AI-powered insights</span>
+        <span>▥ Cash-flow charts</span>
+      </div>
+      <button class="primary gate-primary" id="getStartedBtn">
+        Let’s get started <span>↗</span>
+      </button>
+      <small class="gate-footnote">Built for small businesses, founders and finance teams.</small>
+    </div>
+  </section>
+
+  <section id="signupScreen" class="gate-screen hidden">
+    <div class="gate-card auth-card">
+      <button class="back-link" data-back="welcomeScreen">← Back</button>
+      <div class="eyebrow">CREATE YOUR WORKSPACE</div>
+      <h2>Create your account</h2>
+      <p>Start with your details. After signup, you’ll sign in to continue.</p>
+      <form id="signupForm" class="auth-form">
+        <label>Full name<input name="name" required autocomplete="name" placeholder="Your name" /></label>
+        <label>Phone number<input name="phone" required autocomplete="tel" inputmode="tel" placeholder="Your phone number" /></label>
+        <label>Email address<input name="email" type="email" required autocomplete="email" placeholder="you@business.com" /></label>
+        <label>Create password<input name="password" type="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters" /></label>
+        <button class="primary gate-primary" type="submit">Create account <span>↗</span></button>
+        <div id="signupMessage" class="message" hidden></div>
+      </form>
+      <p class="auth-switch">Already have an account? <button type="button" id="toSigninBtn">Sign in</button></p>
+    </div>
+  </section>
+
+  <section id="signinScreen" class="gate-screen hidden">
+    <div class="gate-card auth-card">
+      <button class="back-link" data-back="signupScreen">← Back</button>
+      <div class="eyebrow">WELCOME BACK</div>
+      <h2>Sign in to continue</h2>
+      <p>Your account is created separately; sign in to open your workspace.</p>
+      <form id="signinForm" class="auth-form">
+        <label>Email address<input name="email" type="email" required autocomplete="email" placeholder="you@business.com" /></label>
+        <label>Password<input name="password" type="password" required autocomplete="current-password" placeholder="Your password" /></label>
+        <button class="primary gate-primary" type="submit">Sign in <span>↗</span></button>
+        <div id="signinMessage" class="message" hidden></div>
+      </form>
+      <p class="auth-switch">New to CashFlow Sentinel? <button type="button" id="toSignupBtn">Create an account</button></p>
+    </div>
+  </section>
+
+  <section id="featureScreen" class="gate-screen hidden">
+    <div class="feature-wrap">
+      <div class="feature-top">
+        <div class="brand">
+          <div class="brand-mark">C<span>F</span></div>
+          <div><b>CashFlow Sentinel</b><small>YOUR FINANCIAL WORKSPACE</small></div>
+        </div>
+        <div>Signed in as <b id="signedInName">User</b> · <button id="signoutBtn" class="text-button">Sign out</button></div>
+      </div>
+      <div class="eyebrow">CHOOSE YOUR NEXT STEP</div>
+      <h1>What would you like to do?</h1>
+      <p class="feature-intro">Choose a tool to open. You can return to this menu anytime.</p>
+      <div class="feature-cards">
+        <button class="feature-card" data-feature="analysis">
+          <span class="feature-symbol">↗</span><b>Cash-flow analysis</b>
+          <p>Project available cash, income, expenses and obligations.</p>
+          <span class="feature-cta">Analyse cash flow →</span>
+        </button>
+        <button class="feature-card" data-feature="transactions">
+          <span class="feature-symbol">⇅</span><b>Transaction CSV</b>
+          <p>Upload transaction data or analyse your sample from Amazon S3.</p>
+          <span class="feature-cta">Analyse transactions →</span>
+        </button>
+        <button class="feature-card" data-feature="history">
+          <span class="feature-symbol">◷</span><b>Analysis history</b>
+          <p>Review saved analyses from DynamoDB.</p>
+          <span class="feature-cta">View history →</span>
+        </button>
+        <button class="feature-card" data-feature="overview">
+          <span class="feature-symbol">▥</span><b>Risk dashboard</b>
+          <p>See Healthy, Warning or Critical status and visualise amounts at risk.</p>
+          <span class="feature-cta">Open dashboard →</span>
+        </button>
+        <button class="feature-card" type="button" onclick="window.location.href='/payments.html'">
+          <span class="feature-symbol">₹</span><b>Payment reminders</b>
+          <p>Track invoices, paid and outstanding amounts, due dates, and payment receipts.</p>
+          <span class="feature-cta">Manage payments →</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="shell hidden" id="dashboardShell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">C<span>F</span></div>
+        <div><b>CashFlow Sentinel</b><small>MSME FINANCIAL INTELLIGENCE</small></div>
+      </div>
+      <div class="side-label">WORKSPACE</div>
+      <button class="nav-item active" data-tab="overview"><span>◫</span> Overview</button>
+      <button class="nav-item" data-tab="analysis"><span>⌁</span> Cash-flow analysis</button>
+      <button class="nav-item" data-tab="transactions"><span>⇅</span> Transactions CSV</button>
+      <button class="nav-item" data-tab="payments"><span>₹</span> Payments & reminders</button>
+      <button class="nav-item" data-tab="history"><span>◷</span> Analysis history</button>
+      <button class="nav-item" data-tab="copilot"><span>✦</span> AI Copilot</button>
+
+      <div class="language-control">
+        <label for="languageSelect">Language / ಭಾಷೆ</label>
+        <select id="languageSelect">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+          <option value="kn">ಕನ್ನಡ</option>
+          <option value="ta">தமிழ்</option>
+          <option value="te">తెలుగు</option>
+        </select>
+      </div>
+
+      <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="true">🔔 Sound alerts: On</button>
+      <div class="sidebar-bottom">
+        <div class="status-dot"></div>
+        <div><b>System status</b><small id="apiStatus">Checking local API…</small></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">FINANCIAL CONTROL CENTER / 01</div>
+          <h1>Good business starts with <em>cash clarity.</em></h1>
+          <p>Spot cash-flow pressure early. Make the next decision with confidence.</p>
+        </div>
+        <div class="top-actions">
+          <span class="live-pill"><i></i> LIVE WORKSPACE</span>
+          <button class="text-button" id="dashboardSignout">Sign out</button>
+          <div class="avatar" id="avatar">CS</div>
+        </div>
+      </header>
+
+      <section class="hero-strip">
+        <div>
+          <div class="eyebrow light">CASH-FLOW EARLY WARNING</div>
+          <h2>Know your runway<br/>before it gets tight.</h2>
+          <p>Model expected income, expenses, receivables and obligations in one place.</p>
+          <button class="primary" id="heroAnalyze">Run an analysis <span>↗</span></button>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="hero-ring"><span>₹</span></div>
+          <div class="float-card card-a"><small>PROJECTED CASH</small><b id="heroProjected">₹ —</b><span>Next planning period</span></div>
+          <div class="float-card card-b"><small>RISK SIGNAL</small><b id="heroRisk">Awaiting data</b><span>Updates after analysis</span></div>
+          <div class="sparkline">
+            <svg viewBox="0 0 300 90" role="img" aria-label="Illustrative cash flow line">
+              <path d="M0 66 C30 62 32 42 58 48 S88 68 112 43 S150 20 172 34 S206 56 229 29 S272 17 300 8" fill="none" stroke="#80f4cf" stroke-width="3" stroke-linecap="round"/>
+              <path d="M0 66 C30 62 32 42 58 48 S88 68 112 43 S150 20 172 34 S206 56 229 29 S272 17 300 8 L300 90 L0 90Z" fill="url(#g)" opacity=".18"/>
+              <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#80f4cf"/><stop offset="1" stop-color="#80f4cf" stop-opacity="0"/></linearGradient></defs>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="metrics-grid">
+        <article class="metric">
+          <div class="metric-top"><span>Projected cash</span><span class="metric-icon mint">₹</span></div>
+          <strong id="metricProjected">₹ —</strong><small id="metricProjectedNote">Run your first analysis</small>
+          <div class="mini-track"><i style="width:52%"></i></div>
+        </article>
+        <article class="metric">
+          <div class="metric-top"><span>Cash position</span><span class="metric-icon blue">↗</span></div>
+          <strong id="metricStatus">Not analysed</strong><small>Based on projected funds</small>
+          <div class="status-text" id="metricStatusNote">Waiting for input</div>
+        </article>
+        <article class="metric">
+          <div class="metric-top"><span>Last analysis</span><span class="metric-icon violet">◷</span></div>
+          <strong id="metricTime">—</strong><small id="metricId">No analysis ID yet</small>
+          <div class="status-text">Latest calculation</div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel analysis-panel" id="analysisPanel">
+          <div class="panel-heading">
+            <div><div class="eyebrow">SCENARIO BUILDER</div><h3>Analyse your cash flow</h3><p>Enter the business numbers for your planning period.</p></div>
+            <span class="step-tag">01 / INPUT</span>
+          </div>
+          <form id="analysisForm">
+            <div class="form-grid">
+              <label>Business name / ID<input name="businessId" value="demo-business-001" required /></label>
+              <label>Currency<select name="currency"><option value="INR">INR — Indian Rupee (₹)</option><option value="USD">USD — US Dollar ($)</option></select></label>
+              <label>Current cash balance<input name="currentCash" type="number" min="0" step="0.01" value="50000" required /></label>
+              <label>Expected income<input name="expectedIncome" type="number" min="0" step="0.01" value="20000" required /></label>
+              <label>Expected customer receivables<input name="receivables" type="number" min="0" step="0.01" value="10000" /></label>
+              <label>Expected expenses<input name="expectedExpenses" type="number" min="0" step="0.01" value="55000" required /></label>
+              <label class="full">Upcoming loan / supplier obligations<input name="upcomingObligations" type="number" min="0" step="0.01" value="30000" /></label>
+            </div>
+            <div class="form-footer">
+              <span>🔒 Your entered figures are sent to your local backend.</span>
+              <button class="primary" type="submit" id="analyzeBtn">Calculate health <span>↗</span></button>
+            </div>
+          </form>
+          <div id="formMessage" class="message" hidden></div>
+        </article>
+
+        <article class="panel result-panel">
+          <div class="panel-heading">
+            <div><div class="eyebrow">DECISION SUPPORT</div><h3>Analysis result</h3><p>Clear signals, practical next steps.</p></div>
+            <span class="result-icon">✳</span>
+          </div>
+          <div class="result-status neutral" id="resultStatus"><span class="status-orb"></span><div><small>FINANCIAL HEALTH</small><b>Awaiting analysis</b></div></div>
+          <div class="result-number">
+            <small>PROJECTED CASH POSITION</small><strong id="resultProjected">₹ —</strong>
+            <span id="resultFormula">Cash + income + receivables − expenses − obligations</span>
+          </div>
+          <div class="risk-chart-card">
+            <div class="chart-head"><div><h4>Payment risk snapshot</h4><p>Available funds compared with amounts due</p></div><span id="riskPercent" class="risk-percent">—</span></div>
+            <div id="riskChart" class="risk-chart"><div class="chart-empty">Run an analysis to generate your risk chart.</div></div>
+            <div class="chart-legend"><span><i class="legend-available"></i> Funds available</span><span><i class="legend-due"></i> Expenses + obligations due</span></div>
+            <div id="riskChartSummary" class="chart-summary">Your payment risk will appear here.</div>
+          </div>
+          <div class="result-section"><h4>⚑ Risk signals</h4><ul id="warningsList"><li>Run an analysis to identify potential pressure points.</li></ul></div>
+          <div class="recommendation"><div class="rec-icon">✦</div><div><small>RECOMMENDED NEXT STEP</small><p id="recommendationText">Enter your numbers and calculate your projected cash position.</p></div></div>
+          <div class="result-section"><h4>✦ AI-powered insights (Amazon Bedrock)</h4><p id="aiInsightText">Run an analysis to generate AI insights.</p><small id="aiProvider"></small></div>
+          <div id="alertStatus" class="message" hidden></div>
+          <div class="result-meta"><span>Analysis ID</span><code id="resultAnalysisId">—</code><button id="copyId" type="button" title="Copy analysis ID">Copy</button></div>
+          <div class="storage-note" id="storageNote">Local calculations are available; AWS saving will be confirmed after your first analysis.</div>
+        </article>
+      </section>
+
+      <section class="content-grid lower-grid">
+        <article class="panel csv-panel" id="transactionsPanel">
+          <div class="panel-heading">
+            <div><div class="eyebrow">DATA INGESTION</div><h3>Transaction CSV</h3><p>Upload a file or analyse the sample already in your S3 bucket.</p></div>
+            <span class="step-tag">02 / DATA</span>
+          </div>
+          <form id="csvForm">
+            <label class="upload-zone" for="csvFile"><span class="upload-icon">↑</span><b>Drop your CSV here or <u>browse files</u></b><small>CSV only · Maximum 5 MB</small><span id="fileName">No file selected</span></label>
+            <input id="csvFile" name="file" type="file" accept=".csv,text/csv" hidden />
+            <div class="csv-actions"><button class="secondary" type="button" id="s3SampleBtn">Analyse sample from S3</button><button class="primary" type="submit">Analyse CSV <span>↗</span></button></div>
+          </form>
+          <div id="csvMessage" class="message" hidden></div>
+          <div id="csvResult" class="csv-result" hidden></div>
+        </article>
+
+        <article class="panel history-panel">
+          <div class="panel-heading">
+            <div><div class="eyebrow">AWS / DYNAMODB</div><h3>Recent analyses</h3><p>Saved records for this business ID.</p></div>
+            <button class="text-button" id="refreshHistory">Refresh ↻</button>
+          </div>
+          <div id="historyList" class="history-list"><div class="empty-state">Your saved analyses will appear here after a successful DynamoDB write.</div></div>
+          <div class="aws-foot"><span class="aws-badge">AWS</span><div><b>Cloud resources configured</b><small id="awsConfig">Loading region, S3 and DynamoDB details…</small></div></div>
+        </article>
+      </section>
+
+      <section class="payments-workspace" id="paymentsPanel">
+        <div class="panel-heading">
+          <div><div class="eyebrow">RECEIVABLES / EVENTBRIDGE</div><h3>Payments & automated reminders</h3><p>Track invoices, paid amounts, outstanding balances and due dates in the same hub.</p></div>
+          <button class="secondary" id="refreshPayments">Refresh ↻</button>
+        </div>
+        <div class="scheduler-banner">
+          <div class="scheduler-icon">◷</div>
+          <div><b>Daily reminder scheduler</b><p>EventBridge Scheduler invokes <code>cashflow-sentinel-reminders</code> once per day. The Lambda checks <code>CashFlowPayments</code>, sends upcoming reminders from the configured start window (default 7 days before due), and sends weekly overdue reminders. Fully paid invoices are skipped.</p><small id="schedulerNote">Schedule state is managed in AWS; this page does not independently query EventBridge.</small></div>
+        </div>
+        <div class="payment-metrics" id="paymentMetrics">
+          <article class="metric"><div class="metric-top"><span>Total invoices</span><span class="metric-icon blue">▤</span></div><strong id="payTotal">—</strong></article>
+          <article class="metric"><div class="metric-top"><span>Total paid</span><span class="metric-icon mint">✓</span></div><strong id="payPaid">₹ —</strong></article>
+          <article class="metric"><div class="metric-top"><span>Outstanding / due</span><span class="metric-icon violet">₹</span></div><strong id="payDue">₹ —</strong></article>
+          <article class="metric"><div class="metric-top"><span>Overdue invoices</span><span class="metric-icon blue">!</span></div><strong id="payOverdue">—</strong></article>
+        </div>
+
+        <div class="payments-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><div class="eyebrow">NEW RECEIVABLE</div><h4>Add invoice / payment due</h4></div></div>
+            <form id="paymentForm">
+              <div class="form-grid">
+                <label>Business ID<input name="businessId" id="paymentBusinessId" required value="demo-business-001"></label>
+                <label>Business name<input name="businessName" required value="Kurta Shop"></label>
+                <label>Recipient email<input name="recipientEmail" type="email" placeholder="real-recipient@yourdomain.com" required></label>
+                <label>Invoice ID<input name="invoiceId" placeholder="INV-KS-001"></label>
+                <label>Payment ID (unique)<input name="paymentId" placeholder="PAY-KS-001"></label>
+                <label>Description<input name="description" required placeholder="Kurta wholesale order"></label>
+                <label>Due date<input name="dueDate" type="date" required></label>
+                <label>Currency<select name="currency"><option value="INR">INR ₹</option><option value="USD">USD $</option></select></label>
+                <label>Total amount<input name="totalAmount" type="number" min="0.01" step="0.01" required></label>
+                <label>Already paid<input name="amountPaid" type="number" min="0" step="0.01" value="0" required></label>
+                <label>Start reminder<input name="reminderStartDays" type="number" min="0" max="60" value="7" required></label>
+                <label>Overdue cadence<select name="overdueReminder"><option value="weekly">Weekly</option><option value="daily">Daily</option><option value="none">Off</option></select></label>
+              </div>
+              <div class="form-footer"><small>Uses the CashFlowPayments DynamoDB table. Real email requires SES sender verification.</small><button class="primary" type="submit">Save invoice ↗</button></div>
+            </form>
+            <div id="paymentMessage" class="message" hidden></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading"><div><div class="eyebrow">PAYMENT ACTIVITY</div><h4>Record payment / test reminder</h4></div></div>
+            <label>Selected payment ID<input id="selectedPaymentId" placeholder="Choose an invoice below or type ID"></label>
+            <div class="form-grid compact-grid">
+              <label>Payment amount<input id="recordPaymentAmount" type="number" min="0.01" step="0.01" placeholder="Amount received"></label>
+              <label>Payment note<input id="recordPaymentNote" placeholder="UPI / bank transfer"></label>
+            </div>
+            <div class="csv-actions"><button class="primary" type="button" id="recordPaymentBtn">Record payment</button><button class="secondary" type="button" id="testReminderBtn">Send test reminder</button></div>
+            <p class="helper-text">A test email is sent only if SES is configured and the invoice is not fully paid.</p>
+            <div class="divider-line"></div>
+            <h4>Import payment reminders CSV</h4>
+            <p class="helper-text">Import a CSV containing <code>recordType=payment_reminder</code>, businessId, paymentId, dueDate, totalAmount, amountPaid, businessName, description, recipientEmail and reminder settings.</p>
+            <div class="csv-actions"><input type="file" id="paymentCsvFile" accept=".csv,text/csv"><button type="button" class="secondary" id="importPaymentsBtn">Import CSV</button></div>
+            <div id="paymentImportMessage" class="message" hidden></div>
+          </article>
+        </div>
+
+        <article class="panel payment-chart-panel">
+          <div class="panel-heading"><div><div class="eyebrow">COLLECTIONS OVERVIEW</div><h4>Paid vs outstanding by invoice</h4><p>Chart is calculated from the payment records loaded for the current business ID.</p></div></div>
+          <div id="paymentChart" class="payment-chart"><div class="chart-empty">Add or load payment records to see the chart.</div></div>
+          <div class="chart-legend"><span><i class="legend-available"></i> Amount paid</span><span><i class="legend-due"></i> Amount due</span></div>
+        </article>
+
+        <article class="panel payments-table-panel">
+          <div class="panel-heading"><div><div class="eyebrow">INVOICE REGISTER</div><h4>Invoices and payment status</h4></div><span id="paymentCountLabel" class="step-tag">0 RECORDS</span></div>
+          <div class="table-scroll">
+            <table class="payments-table">
+              <thead><tr><th>Invoice / details</th><th>Due date</th><th>Total</th><th>Paid</th><th>Outstanding</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody id="paymentRows"><tr><td colspan="7">Loading payment records…</td></tr></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="workspace-panel hidden" id="copilotPanel">
+        <div class="panel-heading">
+          <div><div class="eyebrow">AI FINANCIAL COPILOT</div><h3>Ask CashFlow Sentinel</h3><p>Ask questions about cash flow, payment risk, and planning. AI responses are decision support, not financial advice.</p></div>
+          <span class="step-tag">BEDROCK AI</span>
+        </div>
+        <div class="copilot-quick-actions">
+          <button type="button" class="secondary copilot-prompt" data-prompt="Explain the main cash-flow risks a small business should monitor.">Explain cash-flow risks</button>
+          <button type="button" class="secondary copilot-prompt" data-prompt="How should I prioritize upcoming payments when cash is limited?">Prioritize payments</button>
+          <button type="button" class="secondary copilot-prompt" data-prompt="What should I check before sending overdue invoice reminders?">Overdue reminders</button>
+        </div>
+        <div id="copilotMessages" class="copilot-messages"><div class="copilot-message bot">Hi! I’m your financial copilot. Ask a question or choose a prompt above.</div></div>
+        <form id="copilotForm" class="copilot-form">
+          <label class="sr-only" for="copilotQuestion">Your question</label>
+          <input id="copilotQuestion" name="question" required maxlength="4000" placeholder="Ask about cash flow, invoices, or a what-if scenario…">
+          <button class="primary" id="copilotSend" type="submit">Send ↗</button>
+        </form>
+        <p class="helper-text">Requires valid AWS credentials and Amazon Bedrock model access in your configured AWS region. Do not enter passwords, card numbers, or unnecessary personal data.</p>
+      </section>
+
+      <footer><span>CashFlow Sentinel · Hackathon MVP</span><span>Planning aid only — not financial advice.</span></footer>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+
+  <!-- GLOBAL LANGUAGE SWITCHER -->
+  <div id="google_translate_element" style="display:none"></div>
+
+  <div id="globalLanguagePicker"
+       style="position:fixed;top:14px;right:16px;z-index:999999;
+              background:#101b2b;padding:9px 12px;border:1px solid #334155;
+              border-radius:10px;color:white;box-shadow:0 4px 15px #0003">
+    <label for="globalLanguage">🌐 </label>
+    <select id="globalLanguage"
+            style="padding:7px;border-radius:6px;background:white;color:#111">
+      <option value="en">English</option>
+      <option value="hi">हिन्दी</option>
+      <option value="kn">ಕನ್ನಡ</option>
+      <option value="ta">தமிழ்</option>
+      <option value="te">తెలుగు</option>
+    </select>
+  </div>
+
+  <script>
+  (function () {
+    const KEY = "cashflowLanguage";
+    const supported = ["en", "hi", "kn", "ta", "te"];
+    const picker = document.getElementById("globalLanguage");
+    let currentLanguage = localStorage.getItem(KEY) || "en";
+    let googleReady = false;
+
+    function syncPickers(language) {
+      picker.value = language;
+
+      const dashboardPicker = document.getElementById("languageSelect");
+      if (dashboardPicker) {
+        dashboardPicker.value = language;
+      }
+    }
+
+    function applyLanguage(language) {
+      if (!supported.includes(language)) return;
+
+      currentLanguage = language;
+      localStorage.setItem(KEY, language);
+      syncPickers(language);
+
+      if (!googleReady) return;
+
+      const combo = document.querySelector(".goog-te-combo");
+      if (!combo) return;
+
+      if (combo.value !== language) {
+        combo.value = language;
+        combo.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    }
+
+    picker.addEventListener("change", function () {
+      applyLanguage(this.value);
+    });
+
+    document.addEventListener("change", function (event) {
+      if (event.target && event.target.id === "languageSelect") {
+        applyLanguage(event.target.value);
+      }
+    });
+
+    window.googleTranslateElementInit = function () {
+      new google.translate.TranslateElement({
+        pageLanguage: "en",
+        includedLanguages: "en,hi,kn,ta,te",
+        autoDisplay: false
+      }, "google_translate_element");
+
+      let attempts = 0;
+
+      const timer = setInterval(function () {
+        const combo = document.querySelector(".goog-te-combo");
+        attempts++;
+
+        if (combo) {
+          clearInterval(timer);
+          googleReady = true;
+          applyLanguage(currentLanguage);
+        } else if (attempts >= 40) {
+          clearInterval(timer);
+          console.warn("Google Translate did not initialize.");
+        }
+      }, 250);
+    };
+
+    syncPickers(currentLanguage);
+
+    const script = document.createElement("script");
+    script.src =
+      "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.async = true;
+    script.onerror = function () {
+      console.error("Translation unavailable. Check your internet connection.");
+    };
+
+    document.head.appendChild(script);
+  })();
+  </script>
+
+</body>
+</html>

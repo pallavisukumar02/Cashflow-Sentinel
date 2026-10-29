@@ -1,0 +1,16 @@
+{
+  "modelId": "amazon.nova-lite-v1:0",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "text": "Reply with CashFlow Sentinel connected"
+        }
+      ]
+    }
+  ],
+  "inferenceConfig": {
+    "maxTokens": 50
+  }
+}
