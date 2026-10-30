@@ -249,8 +249,9 @@ app.get("/auth/callback", async (req, res) => {
       {
         method: "POST",
         headers: {
-          "content-type": "application/x-www-form-urlencoded",
-               body: new URLSearchParams({
+          "content-type": "application/x-www-form-urlencoded"
+        },
+           body: new URLSearchParams({
           grant_type: "authorization_code",
           client_id: COGNITO_CLIENT_ID,
       client_secret: COGNITO_CLIENT_SECRET,
