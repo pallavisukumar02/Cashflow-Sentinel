@@ -21,8 +21,8 @@
     "express": "^4.21.2",
     "multer": "^1.4.5-lts.2",
     "@aws-sdk/client-sesv2": "^3.800.0",
-    "@aws-sdk/client-bedrock-runtime": "^3.900.0"
-    "express-session": "^1.18.1",
-    "jose": "^5.9.6"
+   "@aws-sdk/client-bedrock-runtime": "^3.900.0",
+"express-session": "^1.18.1",
+"jose": "^5.9.6"
   }
 }
