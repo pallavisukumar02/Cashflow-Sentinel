@@ -40,8 +40,24 @@ const writeUsers = (users) => fs.writeFileSync(USERS_FILE, JSON.stringify(users,
 const hashPassword = (password, salt = randomBytes(16).toString("hex")) => ({ salt, hash: scryptSync(password, salt, 64).toString("hex") });
 const verifyPassword = (password, user) => { const candidate = scryptSync(password, user.passwordSalt, 64); const stored = Buffer.from(user.passwordHash, "hex"); return stored.length === candidate.length && timingSafeEqual(candidate, stored); };
 
-const s3 = new S3Client({ region: REGION });
-const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: REGION }));
+const accessKeyId = process.env.AWS_ACCESS_KEY_ID?.trim();
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY?.trim();
+
+const awsCredentials =
+  accessKeyId && secretAccessKey
+    ? { accessKeyId, secretAccessKey }
+    : undefined;
+
+const awsConfig = {
+  region: REGION,
+  ...(awsCredentials ? { credentials: awsCredentials } : {})
+};
+
+const s3 = new S3Client(awsConfig);
+
+const ddb = DynamoDBDocumentClient.from(
+  new DynamoDBClient(awsConfig)
+);
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
 app.use(cors());
