@@ -266,7 +266,11 @@ app.get("/auth/callback", async (req, res) => {
     const tokens = await tokenResponse.json();
 
     if (!tokenResponse.ok || !tokens.id_token) {
-      console.error("Cognito token exchange failed:", tokens.error);
+      console.error("Cognito token exchange failed:", {
+  status: tokenResponse.status,
+  error: tokens.error,
+  description: tokens.error_description
+});
       return res.status(401).send("Could not complete sign-in.");
     }
 
