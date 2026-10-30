@@ -55,7 +55,7 @@ const BEDROCK_MODEL_ID = process.env.BEDROCK_MODEL_ID || "amazon.nova-lite-v1:0"
 const COGNITO_ISSUER_URL = (process.env.COGNITO_ISSUER_URL || "").replace(/\/$/, "");
 const COGNITO_DOMAIN = (process.env.COGNITO_DOMAIN || "").replace(/\/$/, "");
 const COGNITO_CLIENT_ID = process.env.COGNITO_CLIENT_ID || "";
-const COGNITO_CLIENT_SECRET = process.env.COGNITO_CLIENT_SECRET || "";
+const COGNITO_CLIENT_SECRET = (process.env.COGNITO_CLIENT_SECRET || "").trim();
 const COGNITO_REDIRECT_URI = process.env.COGNITO_REDIRECT_URI || "";
 const COGNITO_LOGOUT_URI = process.env.COGNITO_LOGOUT_URI || "https://cashflow-sentinel.onrender.com/";
 
