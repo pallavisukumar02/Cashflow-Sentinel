@@ -211,7 +211,7 @@ app.get("/auth/login", (req, res) => {
   url.search = new URLSearchParams({
     client_id: COGNITO_CLIENT_ID,
     response_type: "code",
-    scope: "openid email profile",
+    scope: "openid email",
     redirect_uri: COGNITO_REDIRECT_URI,
     state,
     nonce,
