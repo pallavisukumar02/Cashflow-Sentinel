@@ -250,15 +250,10 @@ app.get("/auth/callback", async (req, res) => {
         method: "POST",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
-          authorization:
-            "Basic " +
-            Buffer.from(
-              `${COGNITO_CLIENT_ID}:${COGNITO_CLIENT_SECRET}`
-            ).toString("base64")
-        },
-        body: new URLSearchParams({
+               body: new URLSearchParams({
           grant_type: "authorization_code",
           client_id: COGNITO_CLIENT_ID,
+      client_secret: COGNITO_CLIENT_SECRET,
           code: String(code),
           redirect_uri: COGNITO_REDIRECT_URI,
           code_verifier: req.session.codeVerifier
